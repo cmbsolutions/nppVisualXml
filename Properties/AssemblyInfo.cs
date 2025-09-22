@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("nppVisualXml")]
-[assembly: AssemblyDescription("Notepad++ plugin for generating random strings")]
+[assembly: AssemblyDescription("Notepad++ plugin for visualizing Xml documents")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CMBSolutions")]
 [assembly: AssemblyProduct("nppVisualXml")]
-[assembly: AssemblyCopyright("Copyright © CMBSolutions 2021 - 2025")]
+[assembly: AssemblyCopyright("Copyright © CMBSolutions 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9.7")]
-[assembly: AssemblyFileVersion("1.9.7")]
+[assembly: AssemblyVersion("0.0.1")]
+[assembly: AssemblyFileVersion("0.0.1")]

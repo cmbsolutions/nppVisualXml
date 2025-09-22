@@ -1,11 +1,8 @@
-﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using Kbg.NppPluginNET.PluginInfrastructure;
+﻿using Kbg.NppPluginNET.PluginInfrastructure;
 using NppPluginNET.Utils;
-using nppVisualXml.Forms;
 using nppVisualXml.Storage;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace Kbg.NppPluginNET
 {
@@ -13,10 +10,9 @@ namespace Kbg.NppPluginNET
     {
         public static readonly string PluginConfigDirectory = Path.Combine(Npp.notepad.GetConfigDirectory(), PluginName);
         internal const string PluginName = "nppVisualXml";
-        static ConfigAndGenerate ConfigAndGenerate = null;
+        static XmlViewer XmlViewer = null;
         static About About = null;
         static Settings MySettings = null;
-        static InsertGuid mInsertGuid = null;
         public static bool isShuttingDown = false;
 
 
@@ -35,25 +31,8 @@ namespace Kbg.NppPluginNET
 
         internal static void CommandMenuInit()
         {
-            PluginBase.SetCommand(0, "Config && Generate", myDockableDialog);
-            PluginBase.SetCommand(1, "Insert GUID at cursor", myDockableGuidDialog);
-            PluginBase.SetCommand(2, "&About", AboutnppVisualXml);
-        }
-
-        private static void myDockableGuidDialog()
-        {
-            MySettings = new Settings();
-            MySettings.Load();
-
-            mInsertGuid = new InsertGuid
-            {
-                settings = MySettings
-            };
-            mInsertGuid.LoadSettings();
-            mInsertGuid.ShowDialog();
-
-            mInsertGuid = null;
-
+            PluginBase.SetCommand(0, "Show VisualXml", myDockableDialog);
+            PluginBase.SetCommand(1, "&About", AboutnppVisualXml);
         }
 
         internal static void SetToolBarIcons()
@@ -72,12 +51,7 @@ namespace Kbg.NppPluginNET
             MySettings = new Settings();
             MySettings.Load();
 
-            ConfigAndGenerate = new ConfigAndGenerate();
-            ConfigAndGenerate.settings = MySettings;
-            ConfigAndGenerate.LoadSettings();
-            ConfigAndGenerate.ShowDialog();
-
-            ConfigAndGenerate = null;
+            ToggleXmlViewerUI();
         }
         /// <summary>
         /// Shows the "About" dialog window
@@ -90,6 +64,45 @@ namespace Kbg.NppPluginNET
 
         }
 
-    }
+        private static void ToggleXmlViewerUI()
+        {
+            XmlViewerUIVisible();
+        }
 
+        public static void XmlViewerUIVisible(bool? show = null)
+        {
+            if (XmlViewer == null)
+            {
+                XmlViewer = new XmlViewer();
+                XmlViewer.settings = MySettings;
+
+                XmlViewer.LoadSettings();
+
+                var XmlViewerUIData = new NppTbData
+                {
+                    hClient = XmlViewer.Handle,
+                    pszName = "VisualXml",
+                    dlgID = 0,
+                    uMask = NppTbMsg.DWS_DF_CONT_RIGHT,
+                    hIconTab = 0,
+                    pszModuleName = PluginName
+                };
+                var XmlViewerUIPointer = Marshal.AllocHGlobal(Marshal.SizeOf(XmlViewerUIData));
+                Marshal.StructureToPtr(XmlViewerUIData, XmlViewerUIPointer, false);
+
+                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMREGASDCKDLG, 0, XmlViewerUIPointer);
+            }
+            else
+            {
+                if (show ?? !XmlViewer.Visible)
+                {
+                    Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMSHOW, 0, XmlViewer.Handle);
+                }
+                else
+                {
+                    Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMHIDE, 0, XmlViewer.Handle);
+                }
+            }
+        }
+    }
 }

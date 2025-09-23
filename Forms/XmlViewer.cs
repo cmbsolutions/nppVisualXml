@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Kbg.NppPluginNET.PluginInfrastructure;
+using nppVisualXml.Modules;
+using nppVisualXml.Storage;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,9 +9,8 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Kbg.NppPluginNET.PluginInfrastructure;
-using nppVisualXml.Modules;
-using nppVisualXml.Storage;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Kbg.NppPluginNET
 {
@@ -24,6 +26,8 @@ namespace Kbg.NppPluginNET
             InitializeComponent();
             this.Editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
             this.Notepad = new NotepadPPGateway();
+            tvXml.BeginUpdate();
+            tvXml.EndUpdate();
         }
 
         public void LoadSettings()
@@ -110,5 +114,17 @@ namespace Kbg.NppPluginNET
 
             settings.Save();
         }
+
+        private void XmlViewer_Load(object sender, EventArgs e)
+        {
+            RefreshFromActiveDoc();
+        }
+
+        public void RefreshFromActiveDoc()
+        {
+            var xml = NppText.GetActiveDocumentText();
+            XmlTreeFiller.LoadXmlIntoTree(tvXml, xml);
+        }
+
     }
 }

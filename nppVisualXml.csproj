@@ -81,6 +81,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Forms\About.cs">
@@ -91,7 +92,9 @@
     </Compile>
     <Compile Include="JSON_Tools\JNode.cs" />
     <Compile Include="JSON_Tools\JsonParser.cs" />
+    <Compile Include="Modules\NppText.cs" />
     <Compile Include="Modules\StringGenerator.cs" />
+    <Compile Include="Modules\XmlTreeFiller.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />
     <Compile Include="Forms\XmlViewer.cs">

@@ -17,7 +17,7 @@ namespace Kbg.NppPluginNET
 
 
         public static void OnNotification(ScNotification notification)
-        {  
+        {
             // This method is invoked whenever something is happening in notepad++
             // use eg. as
             // if (notification.Header.Code == (uint)NppMsg.NPPN_xxx)
@@ -26,6 +26,13 @@ namespace Kbg.NppPluginNET
             //
             // if (notification.Header.Code == (uint)SciMsg.SCNxxx)
             // { ... }
+            switch ((NppMsg)notification.Header.Code)
+            {
+                case NppMsg.NPPN_BUFFERACTIVATED:
+                case NppMsg.NPPN_FILESAVED:
+                    XmlViewer?.RefreshFromActiveDoc();
+                    break;
+            }
 
         }
 

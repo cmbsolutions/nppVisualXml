@@ -119,7 +119,8 @@ namespace nppVisualXml.Modules
             if (el is IXmlLineInfo li && li.HasLineInfo())
                 pos = $"  (line {li.LineNumber}, col {li.LinePosition})";
 
-            return attrsStr.Length > 0 ? $"<{name} {attrsStr}>{pos}" : $"<{name}>{pos}";
+            //return attrsStr.Length > 0 ? $"<{name} {attrsStr}>{pos}" : $"<{name}>{pos}";
+            return $"<{name}>";
         }
 
         private static string Truncate(string s, int maxLen)

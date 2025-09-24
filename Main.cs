@@ -1,6 +1,7 @@
 ﻿using Kbg.NppPluginNET.PluginInfrastructure;
 using NppPluginNET.Utils;
 using nppVisualXml.Storage;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -78,37 +79,63 @@ namespace Kbg.NppPluginNET
 
         public static void XmlViewerUIVisible(bool? show = null)
         {
-            if (XmlViewer == null)
+            if (XmlViewer == null || XmlViewer.IsDisposed)
             {
-                XmlViewer = new XmlViewer();
-                XmlViewer.settings = MySettings;
+                XmlViewer = new XmlViewer
+                {
+                    settings = MySettings
+                };
 
                 XmlViewer.LoadSettings();
+                XmlViewer.RefreshFromActiveDoc();
 
-                var XmlViewerUIData = new NppTbData
+                IntPtr hwndClient = XmlViewer.Handle;
+
+                var data = new NppTbData
                 {
-                    hClient = XmlViewer.Handle,
+                    hClient = hwndClient,
                     pszName = "VisualXml",
                     dlgID = 0,
-                    uMask = NppTbMsg.DWS_DF_CONT_RIGHT,
-                    hIconTab = 0,
+                    uMask = NppTbMsg.DWS_DF_CONT_RIGHT | NppTbMsg.DWS_ICONBAR,
+                    hIconTab = (uint)IntPtr.Zero,
                     pszModuleName = PluginName
                 };
-                var XmlViewerUIPointer = Marshal.AllocHGlobal(Marshal.SizeOf(XmlViewerUIData));
-                Marshal.StructureToPtr(XmlViewerUIData, XmlViewerUIPointer, false);
+                IntPtr pData = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(NppTbData)));
+                try
+                {
+                    Marshal.StructureToPtr(data, pData, false);
 
-                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMREGASDCKDLG, 0, XmlViewerUIPointer);
+                    // Register the dockable window
+                    Win32.SendMessage(
+                        PluginBase.nppData._nppHandle,
+                        (uint)NppMsg.NPPM_DMMREGASDCKDLG,
+                        0, pData);
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(pData);
+                }
+
+                // First registration doesn't auto-show: do it explicitly
+                if (show ?? true)
+                {
+                    Win32.SendMessage(
+                        PluginBase.nppData._nppHandle,
+                        (uint)NppMsg.NPPM_DMMSHOW,
+                        0, hwndClient);
+                }
+
+                return;
+            }
+
+            // Already registered: toggle or force
+            if (show ?? !XmlViewer.Visible)
+            {
+                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMSHOW, 0, XmlViewer.Handle);
             }
             else
             {
-                if (show ?? !XmlViewer.Visible)
-                {
-                    Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMSHOW, 0, XmlViewer.Handle);
-                }
-                else
-                {
-                    Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMHIDE, 0, XmlViewer.Handle);
-                }
+                Win32.SendMessage(PluginBase.nppData._nppHandle, (uint)NppMsg.NPPM_DMMHIDE, 0, XmlViewer.Handle);
             }
         }
     }

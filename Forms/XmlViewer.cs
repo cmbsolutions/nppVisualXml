@@ -126,5 +126,25 @@ namespace Kbg.NppPluginNET
             XmlTreeFiller.LoadXmlIntoTree(tvXml, xml);
         }
 
+        private void tsbCollapse_Click(object sender, EventArgs e)
+        {
+            if (tvXml.Nodes.Count > 0)
+            {
+                tvXml.CollapseAll();
+            }
+        }
+
+        private void tsbExpand_Click(object sender, EventArgs e)
+        {
+            if (tvXml.Nodes.Count > 0)
+            {
+                tvXml.ExpandAll();
+            }
+        }
+
+        private void tsbReload_Click(object sender, EventArgs e)
+        {
+            RefreshFromActiveDoc();
+        }
     }
 }

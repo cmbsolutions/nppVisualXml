@@ -63,9 +63,39 @@ namespace nppVisualXml.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap button_blue_add {
+            get {
+                object obj = ResourceManager.GetObject("button_blue_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap button_blue_remove {
+            get {
+                object obj = ResourceManager.GetObject("button_blue_remove", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cancel {
             get {
                 object obj = ResourceManager.GetObject("cancel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap find {
+            get {
+                object obj = ResourceManager.GetObject("find", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -82,30 +112,22 @@ namespace nppVisualXml.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to appname=nppVisualXml
-        ///appversion=1.9.0
-        ///NumericUpDownLength=32
-        ///NumericUpDownQuantity=8
-        ///CheckboxNumbers=true
-        ///CheckboxLowercase=true
-        ///CheckboxUppercase=true
-        ///CheckboxBeginLetter=true
-        ///CheckboxSymbols=true
-        ///TextboxSymbols=!&quot;#$%&amp;&apos;(\)*+,-./:;&lt;=&gt;?@[ ]^_`{|}~
-        ///CheckboxSimilar=true
-        ///CheckboxDuplicate=true
-        ///CheckboxSequential=true
-        ///TextboxPrefix=my_prefix
-        ///RadioButtonNew=true
-        ///RadioButtonCurrent=false
-        ///RadioButtonInline=false
-        ///TextboxSeperator=;
-        ///CheckboxSaveOnClose=true
-        ///CheckboxCloseNoMessage=true
-        /// [rest of string was truncated]&quot;;.
+        ///appversion=0.0.1
+        ///.
         /// </summary>
         internal static string nppVisualXmlSettings {
             get {
                 return ResourceManager.GetString("nppVisualXmlSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap refresh {
+            get {
+                object obj = ResourceManager.GetObject("refresh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

@@ -126,6 +126,7 @@
             this.tsbSearch.Name = "tsbSearch";
             this.tsbSearch.Size = new System.Drawing.Size(23, 22);
             this.tsbSearch.Text = "Search";
+            this.tsbSearch.Click += new System.EventHandler(this.tsbSearch_Click);
             // 
             // toolStripSeparator2
             // 

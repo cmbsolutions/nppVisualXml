@@ -6,8 +6,10 @@ using System.Xml.Linq;
 
 namespace nppVisualXml.Modules
 {
-    internal class XmlTreeFiller
+    internal static class XmlTreeFiller
     {
+        private const bool ShowNamespaces = false;
+
         public static void LoadXmlIntoTree(TreeView tree, string xmlText)
         {
             tree.BeginUpdate();
@@ -40,11 +42,20 @@ namespace nppVisualXml.Modules
 
         private static TreeNode CreateElementNode(XElement el)
         {
-            var tn = new TreeNode(GetElementDisplay(el)) { Tag = el };
+            var li = GetElementDisplay(el);
+            var tn = new TreeNode(li.Name)
+            {
+                Tag = el,
+                Name = $"{li.LineNo}:{li.LinePosition}"
+            };
 
             // Attributes first
             foreach (var attr in el.Attributes())
-                tn.Nodes.Add(new TreeNode($"@{attr.Name} = \"{Truncate(attr.Value, 80)}\"") { Tag = attr });
+            {
+                if (attr.IsNamespaceDeclaration) continue;
+                tn.Nodes.Add(new TreeNode($"@{QName(attr.Name)} = \"{Truncate(attr.Value, 80)}\"") { Tag = attr });
+            }
+                
 
             // Child content
             foreach (var n in el.Nodes())
@@ -86,47 +97,31 @@ namespace nppVisualXml.Modules
             return tn;
         }
 
-        // Call this instead of CreateElementNode when building the tree
-        private static TreeNode CreateElementNodeLazy(XElement el)
+        private static XmlLineInfo GetElementDisplay(XElement el)
         {
-            var tn = new TreeNode(GetElementDisplay(el)) { Tag = el };
-            // attributes now
-            foreach (var attr in el.Attributes())
-                tn.Nodes.Add(new TreeNode($"@{attr.Name} = \"{Truncate(attr.Value, 80)}\"") { Tag = attr });
-
-            // add a placeholder if there are element children or interesting nodes
-            bool hasChildren = el.Nodes().Any(n =>
-                n.NodeType == XmlNodeType.Element ||
-                n.NodeType == XmlNodeType.Text ||
-                n.NodeType == XmlNodeType.CDATA ||
-                n.NodeType == XmlNodeType.Comment ||
-                n.NodeType == XmlNodeType.ProcessingInstruction);
-
-            if (hasChildren)
-                tn.Nodes.Add(new TreeNode("…")); // placeholder
-
-            return tn;
-        }
-
-        private static string GetElementDisplay(XElement el)
-        {
-            var name = el.Name.ToString();
-            var attrsPreview = el.Attributes().Take(3)
-                .Select(a => $"{a.Name}=\"{Truncate(a.Value, 20)}\"");
+            XmlLineInfo lineInfo = new XmlLineInfo();
+            var name = QName(el.Name);
+            var attrsPreview = el.Attributes()
+                .Where(a => !a.IsNamespaceDeclaration)
+                .Take(3)
+                .Select(a => $"{QName(a.Name)}=\"{Truncate(a.Value, 20)}\"");
             var attrsStr = string.Join(" ", attrsPreview);
 
-            string pos = "";
-            if (el is IXmlLineInfo li && li.HasLineInfo())
-                pos = $"  (line {li.LineNumber}, col {li.LinePosition})";
+            lineInfo.Name = name;
 
-            //return attrsStr.Length > 0 ? $"<{name} {attrsStr}>{pos}" : $"<{name}>{pos}";
-            return $"<{name}>";
+            if (el is IXmlLineInfo li && li.HasLineInfo())
+            {
+                lineInfo.LineNo = li.LineNumber;
+                lineInfo.LinePosition = li.LinePosition;
+            }
+
+            return lineInfo;
         }
+
+        private static string QName(XName name)
+        => ShowNamespaces ? name.ToString() : name.LocalName;
 
         private static string Truncate(string s, int maxLen)
-        {
-            if (string.IsNullOrEmpty(s)) return s;
-            return s.Length <= maxLen ? s : s.Substring(0, maxLen) + "…";
-        }
+               => string.IsNullOrEmpty(s) || s.Length <= maxLen ? s : s.Substring(0, maxLen) + "…";
     }
 }

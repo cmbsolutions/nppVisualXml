@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,6 +29,7 @@ namespace Kbg.NppPluginNET
             this.Notepad = new NotepadPPGateway();
             tvXml.BeginUpdate();
             tvXml.EndUpdate();
+            tvXml.NodeMouseClick += TvXml_NodeMouseClick;
         }
 
         public void LoadSettings()
@@ -145,6 +147,58 @@ namespace Kbg.NppPluginNET
         private void tsbReload_Click(object sender, EventArgs e)
         {
             RefreshFromActiveDoc();
+        }
+
+        private void TvXml_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (!TryGetLineColFromTag(e.Node, out int line1, out int col1))
+                return;
+
+            JumpToLineCol(line1, col1);
+        }
+
+        private static bool TryGetLineColFromTag(TreeNode node, out int line1, out int col1)
+        {
+            line1 = 0; col1 = 0;
+            if (node.Tag is System.Xml.IXmlLineInfo li && li.HasLineInfo())
+            {
+                line1 = li.LineNumber;
+                col1 = li.LinePosition;
+                return line1 > 0 && col1 > 0;
+            }
+            return false;
+        }
+
+        private static void JumpToLineCol(int line1, int col1)
+        {
+            // Notepad++ / Scintilla are 0-based for lines and byte-based for positions.
+            int line0 = Math.Max(0, line1 - 1);
+            int colChars = Math.Max(0, col1 - 1);
+
+            var editor = new ScintillaGateway(PluginBase.GetCurrentScintilla());
+
+            // Start of the target line (byte position)
+            int lineStartPos = editor.PositionFromLine(line0);
+
+            // Get the line text to convert character column -> UTF-8 byte offset
+            string lineText = editor.GetLine(line0) ?? string.Empty;
+
+            // Bound the character column to the line length (in characters)
+            if (colChars > lineText.Length) colChars = lineText.Length;
+
+            // Compute byte offset for the first 'colChars' characters in UTF-8
+            int byteOffset = Encoding.UTF8.GetByteCount(lineText.Substring(0, colChars));
+
+            int targetPos = lineStartPos + byteOffset;
+
+            // Move caret, collapse selection, and scroll into view
+            editor.SetSel(targetPos, targetPos);
+            editor.ScrollCaret();
+
+            // Optional: flash/select a token width for visibility (e.g., 1 char)
+            // int nextByte = byteOffset + (colChars < lineText.Length ? Encoding.UTF8.GetByteCount(lineText.AsSpan(colChars, 1)) : 0);
+            // editor.SetSel(targetPos, lineStartPos + nextByte);
+            // editor.ScrollCaret();
         }
     }
 }

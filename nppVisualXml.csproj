@@ -94,6 +94,7 @@
     <Compile Include="JSON_Tools\JsonParser.cs" />
     <Compile Include="Modules\NppText.cs" />
     <Compile Include="Modules\StringGenerator.cs" />
+    <Compile Include="Modules\XmlLineInfo.cs" />
     <Compile Include="Modules\XmlTreeFiller.cs" />
     <Compile Include="PluginInfrastructure\ClikeStringArray.cs" />
     <Compile Include="PluginInfrastructure\DllExport\DllExportAttribute.cs" />

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XmlViewer));
             this.tvXml = new System.Windows.Forms.TreeView();
             this.tlpFrames = new System.Windows.Forms.TableLayoutPanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -39,6 +40,8 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.tXPath = new System.Windows.Forms.TextBox();
+            this.tsbCaseSensitive = new System.Windows.Forms.ToolStripButton();
+            this.tsbRegex = new System.Windows.Forms.ToolStripButton();
             this.tlpFrames.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +81,8 @@
             this.toolStripSeparator1,
             this.tstSearch,
             this.tsbSearch,
+            this.tsbCaseSensitive,
+            this.tsbRegex,
             this.toolStripSeparator2,
             this.tsbReload});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
@@ -153,6 +158,32 @@
             this.tXPath.TabIndex = 2;
             this.tXPath.WordWrap = false;
             // 
+            // tsbCaseSensitive
+            // 
+            this.tsbCaseSensitive.BackColor = System.Drawing.SystemColors.Control;
+            this.tsbCaseSensitive.Checked = true;
+            this.tsbCaseSensitive.CheckOnClick = true;
+            this.tsbCaseSensitive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbCaseSensitive.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbCaseSensitive.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tsbCaseSensitive.Image = ((System.Drawing.Image)(resources.GetObject("tsbCaseSensitive.Image")));
+            this.tsbCaseSensitive.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbCaseSensitive.Name = "tsbCaseSensitive";
+            this.tsbCaseSensitive.Size = new System.Drawing.Size(23, 22);
+            this.tsbCaseSensitive.Text = "Cc";
+            // 
+            // tsbRegex
+            // 
+            this.tsbRegex.Checked = true;
+            this.tsbRegex.CheckOnClick = true;
+            this.tsbRegex.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsbRegex.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbRegex.Image = ((System.Drawing.Image)(resources.GetObject("tsbRegex.Image")));
+            this.tsbRegex.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRegex.Name = "tsbRegex";
+            this.tsbRegex.Size = new System.Drawing.Size(23, 22);
+            this.tsbRegex.Text = "*.";
+            // 
             // XmlViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -189,5 +220,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.TextBox tXPath;
+        private System.Windows.Forms.ToolStripButton tsbCaseSensitive;
+        private System.Windows.Forms.ToolStripButton tsbRegex;
     }
 }

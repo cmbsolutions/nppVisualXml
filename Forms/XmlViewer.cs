@@ -2,16 +2,10 @@
 using nppVisualXml.Modules;
 using nppVisualXml.Storage;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Kbg.NppPluginNET
 {
@@ -30,6 +24,7 @@ namespace Kbg.NppPluginNET
             tvXml.BeginUpdate();
             tvXml.EndUpdate();
             tvXml.NodeMouseClick += TvXml_NodeMouseClick;
+            TreeSearchOwnerDraw.Attach(tvXml);
         }
 
         public void LoadSettings()
@@ -199,6 +194,16 @@ namespace Kbg.NppPluginNET
             // int nextByte = byteOffset + (colChars < lineText.Length ? Encoding.UTF8.GetByteCount(lineText.AsSpan(colChars, 1)) : 0);
             // editor.SetSel(targetPos, lineStartPos + nextByte);
             // editor.ScrollCaret();
+        }
+
+        private void tsbSearch_Click(object sender, EventArgs e)
+        {
+            var q = tstSearch.Text;
+            bool caseSensitive = tsbCaseSensitive.Checked; // if you have this
+            bool useRegex = tsbRegex.Checked;              // if you have this
+
+            int hits = TreeSearchOwnerDraw.SearchAndHighlight(tvXml, q, caseSensitive, useRegex);
+            tXPath.Text = hits == 1 ? "1 match" : $"{hits} matches";
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Kbg.NppPluginNET
 
         private void About_Load(object sender, EventArgs e)
         {
-            label1.Text = $"nppVisualXml v{GetAssemblyFileVersion()}\r\n\r\nGenerates random strings with configurable output.";
+            label1.Text = $"nppVisualXml v{GetAssemblyFileVersion()}\r\n\r\nVisualize XML Documents in a treeview including values.";
         }
 
         public static string GetAssemblyFileVersion()

@@ -2,10 +2,12 @@
 using nppVisualXml.Modules;
 using nppVisualXml.Storage;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Kbg.NppPluginNET
 {
@@ -16,6 +18,7 @@ namespace Kbg.NppPluginNET
 
         public Settings settings { get; set; }
 
+
         public XmlViewer()
         {
             InitializeComponent();
@@ -24,6 +27,7 @@ namespace Kbg.NppPluginNET
             tvXml.BeginUpdate();
             tvXml.EndUpdate();
             tvXml.NodeMouseClick += TvXml_NodeMouseClick;
+            tvXml.BeforeExpand += TvXml_BeforeExpand;
             TreeSearchOwnerDraw.Attach(tvXml);
         }
 
@@ -110,6 +114,23 @@ namespace Kbg.NppPluginNET
             }
 
             settings.Save();
+        }
+
+        private async void TvXml_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            if (!XmlTreeFiller.NeedsPopulate(e.Node)) return;
+
+            // clear placeholder
+            e.Node.Nodes.Clear();
+
+            if (e.Node.Tag is List<XAttribute> attrs)
+            {
+                await XmlTreeFiller.PopulateAttributesAsync(e.Node, attrs);
+            }
+            else if (e.Node.Tag is XElement el)
+            {
+                await XmlTreeFiller.PopulateElementChildrenAsync(e.Node, el);
+            }
         }
 
         private void XmlViewer_Load(object sender, EventArgs e)

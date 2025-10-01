@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -16,6 +17,7 @@ namespace nppVisualXml.Modules
         private const int ChunkSize = 200;          // nodes per UI batch
         private const int MaxPreviewLen = 80;       // text/cdata preview length
 
+        private static XDocument _xdoc;
 
         public static void LoadXmlIntoTree(TreeView tree, string xmlText)
         {
@@ -25,14 +27,14 @@ namespace nppVisualXml.Modules
                 tree.Nodes.Clear();
                 if (string.IsNullOrWhiteSpace(xmlText)) return;
 
-                var xdoc = XDocument.Parse(
+                _xdoc = XDocument.Parse(
                     xmlText,
                     LoadOptions.PreserveWhitespace | LoadOptions.SetLineInfo
                 );
 
-                if (xdoc.Root == null) return;
+                if (_xdoc.Root == null) return;
 
-                var rootNode = CreateElementNodeLazy(xdoc.Root);
+                var rootNode = CreateElementNodeLazy(_xdoc.Root);
                 tree.Nodes.Add(rootNode);
                 rootNode.Expand();
             }
@@ -128,6 +130,7 @@ namespace nppVisualXml.Modules
         private static TreeNode CreateElementNodeLazy(XElement el)
         {
             var tn = new TreeNode(QName(el.Name)) { Tag = el };
+            TreeNodeIndex.Register(tn, el);
 
             // (Optional) group attributes under a single node for fewer items
             var attrs = el.Attributes().Where(a => !a.IsNamespaceDeclaration).ToList();
@@ -172,6 +175,9 @@ namespace nppVisualXml.Modules
                 {
                     list.Add(new TreeNode($"@{a.Name.LocalName} = \"{Truncate(a.Value, MaxPreviewLen)}\"") { Tag = a });
                 }
+
+                foreach (var n in list) TreeNodeIndex.Register(n, (XObject)n.Tag);
+
                 return list;
             });
 
@@ -214,6 +220,7 @@ namespace nppVisualXml.Modules
                             break;
                     }
                 }
+                foreach (var n in list) TreeNodeIndex.Register(n, (XObject)n.Tag);
                 return list;
             });
 
@@ -249,14 +256,71 @@ namespace nppVisualXml.Modules
 
         private static void MakeExpandable(TreeNode parent)
         {
-            if (parent.Nodes.Count == 0)
-                parent.Nodes.Add(new TreeNode { Name = PlaceholderKey, Text = "" }); // invisible-ish
+            parent.Nodes.Add(new TreeNode { Name = PlaceholderKey, Text = "..." }); // invisible-ish
         }
 
         public static bool NeedsPopulate(TreeNode node)
         {
             return node.Nodes.Count == 1 && node.Nodes[0].Name == PlaceholderKey;
         }
+
+        public static TreeNode FindPlaceholderChild(TreeNode node)
+        {
+            foreach (TreeNode c in node.Nodes)
+                if (c.Name == PlaceholderKey) return c;
+            return null;
+        }
+
+        public static IEnumerable<XObject> FindMatchesInXDoc(string query, bool caseSensitive, bool useRegex)
+        {
+            if (_xdoc?.Root == null || string.IsNullOrEmpty(query)) yield break;
+
+            // Prepare matchers
+            Func<string, bool> isMatch;
+            if (useRegex)
+            {
+                var opts = caseSensitive ? RegexOptions.CultureInvariant : (RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+                var re = new Regex(query, opts);
+                isMatch = s => re.IsMatch(s ?? string.Empty);
+            }
+            else
+            {
+                var cmp = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+                isMatch = s => (s ?? string.Empty).IndexOf(query, cmp) >= 0;
+            }
+
+            // Walk elements
+            foreach (var el in _xdoc.Descendants())
+            {
+                // element name
+                if (isMatch(el.Name.LocalName)) yield return el;
+
+                // attributes (name or value)
+                foreach (var a in el.Attributes().Where(a => !a.IsNamespaceDeclaration))
+                {
+                    if (isMatch(a.Name.LocalName) || isMatch(a.Value)) yield return a;
+                }
+
+                // text nodes (skip pure whitespace)
+                foreach (var t in el.Nodes().OfType<XText>())
+                {
+                    var v = t.Value;
+                    if (!string.IsNullOrWhiteSpace(v) && isMatch(v)) yield return t;
+                }
+
+                // comments / cdata / PI if you wish
+                foreach (var c in el.Nodes().OfType<XComment>())
+                    if (isMatch(c.Value)) yield return c;
+
+                foreach (var cd in el.Nodes().OfType<XCData>())
+                    if (isMatch(cd.Value)) yield return cd;
+
+                foreach (var pi in el.Nodes().OfType<XProcessingInstruction>())
+                    if (isMatch(pi.Target) || isMatch(pi.Data)) yield return pi;
+            }
+        }
+
+
 
         // Small native helper to suspend/resume redraw
         private const int WM_SETREDRAW = 0x000B;

@@ -94,6 +94,7 @@
     <Compile Include="JSON_Tools\JsonParser.cs" />
     <Compile Include="Modules\NppText.cs" />
     <Compile Include="Modules\StringGenerator.cs" />
+    <Compile Include="Modules\TreeNodeIndex.cs" />
     <Compile Include="Modules\TreeSearch.cs" />
     <Compile Include="Modules\TreeSearchOwnerDraw.cs" />
     <Compile Include="Modules\XmlLineInfo.cs" />

@@ -19,7 +19,7 @@ namespace nppVisualXml.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -111,9 +111,24 @@ namespace nppVisualXml.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to appname=nppVisualXml
-        ///appversion=0.0.1
-        ///.
+        ///   Looks up a localized string similar to {
+        ///    &quot;appname&quot;: &quot;nppVisualXml&quot;,
+        ///    &quot;appversion&quot;: &quot;0.0.1&quot;,
+        ///    &quot;toolStrip1&quot;: {
+        ///        &quot;tsbCaseSensitive&quot;: false,
+        ///        &quot;tsbRegex&quot;: false,
+        ///        &quot;tscboSearch&quot;: {
+        ///            &quot;History&quot;: [
+        ///                {
+        ///                    &quot;CaseSensitive&quot;: false,
+        ///                    &quot;Regex&quot;: false,
+        ///                    &quot;SearchText&quot;: &quot;Quantity&quot;
+        ///                },
+        ///                {
+        ///                    &quot;CaseSensitive&quot;: true,
+        ///                    &quot;Regex&quot;: false,
+        ///                    &quot;SearchText&quot;: &quot;Price&quot;
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string nppVisualXmlSettings {
             get {

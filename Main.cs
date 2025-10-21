@@ -3,6 +3,7 @@ using NppPluginNET.Utils;
 using nppVisualXml.Storage;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace Kbg.NppPluginNET
@@ -37,8 +38,18 @@ namespace Kbg.NppPluginNET
 
         }
 
+        private static Assembly LoadDependency(object sender, ResolveEventArgs args)
+        {
+            string assemblyFile = Path.Combine(Npp.pluginDllDirectory, new AssemblyName(args.Name).Name) + ".dll";
+            if (File.Exists(assemblyFile))
+                return Assembly.LoadFrom(assemblyFile);
+            return null;
+        }
+
         internal static void CommandMenuInit()
         {
+            AppDomain.CurrentDomain.AssemblyResolve += LoadDependency;
+
             PluginBase.SetCommand(0, "Show VisualXml", myDockableDialog);
             PluginBase.SetCommand(1, "&About", AboutnppVisualXml);
         }

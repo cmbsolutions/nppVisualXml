@@ -18,7 +18,7 @@ namespace nppVisualXml.Storage
         {
             string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string savePath = Path.Combine(appDataPath, "CMBSolutions", "nppVisualXml");
-            FilePath = Path.Combine(savePath, "nppVisualXml.ini");
+            FilePath = Path.Combine(savePath, "nppVisualXml.json");
 
             if (!File.Exists(FilePath) || reset)
             {
@@ -42,44 +42,16 @@ namespace nppVisualXml.Storage
 
             try
             {
-                settings = DeserializeIni(FilePath);
+                settings = DeserializeJSonFile(FilePath);
 
 
-                if (settings.Appversion != "1.9.7")
+                if (settings.Appversion != "0.0.1")
                 {
-                    SettingsModel defaults = DeserializeIniFromString(Resources.nppVisualXmlSettings);
+                    SettingsModel defaults = DeserializeJSonFromString(Resources.nppVisualXmlSettings);
 
-                    foreach (ConfigItem configitem in defaults.ConfigItems)
-                    {
-                        if (!settings.ConfigItems.Exists(c => c.Name == configitem.Name))
-                        {
-                            settings.ConfigItems.Add(configitem);
-                        }
-                    }
                     settings.Appname = "nppVisualXml";
-                    settings.Appversion = "1.9.7";
+                    settings.Appversion = "0.0.1";
                 }
-                //else
-                //{
-                //    string check = "";
-                //    foreach (ConfigItem configitem in settings.ConfigItems)
-                //    {
-                //        check += configitem.Name + "|";
-                //    }
-                //    check = check.TrimEnd('|');
-                    
-                //    string checkHash;
-                //    using (MD5 md5 = MD5.Create())
-                //    {
-                //        byte[] hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(check));
-                //        checkHash = BitConverter.ToString(hashBytes).Replace("-", "").ToUpperInvariant();
-                //    }
-                //    if ( check != "392FD30BC7A07D4CBD4F176F9C57A835")
-                //    {
-                //        MessageBox.Show("Unknown settings found. Resetting to defaults.", "nppVisualXml", MessageBoxButtons.OK);
-
-                //    }
-                //}
             }
             catch (Exception ex)
             {
@@ -87,89 +59,23 @@ namespace nppVisualXml.Storage
             }
         }
 
-        private SettingsModel DeserializeIni(string ini)
+        private SettingsModel DeserializeJSonFile(string jsonfile)
         {
-            SettingsModel tmp = new SettingsModel
-            {
-                ConfigItems = new List<ConfigItem>()
-            };
-
-            using (FileStream stream = new FileStream(ini, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    String line = reader.ReadLine();
-                    String[] parts = line.Split('=');
-                    tmp.Appname = parts[1];
-
-                    line = reader.ReadLine();
-                    parts = line.Split('=');
-                    tmp.Appversion = parts[1];
-
-                    while (!reader.EndOfStream)
-                    {
-                        line = reader.ReadLine();
-                        if (line == "" || line == null) break;
-                        parts = line.Split(new char[] { '=' }, 2);
-
-                        tmp.ConfigItems.Add(new ConfigItem { Name = parts[0], Value = parts[1] });
-                    }
-                }
-            }
-
+            SettingsModel tmp = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingsModel>(File.ReadAllText(jsonfile));
             return tmp;
         }
 
-        private SettingsModel DeserializeIniFromString(string ini)
+        private SettingsModel DeserializeJSonFromString(string json)
         {
-            SettingsModel tmp = new SettingsModel
-            {
-                ConfigItems = new List<ConfigItem>()
-            };
-
-            using (StringReader reader = new StringReader(ini))
-            {
-                String line = reader.ReadLine();
-                String[] parts = line.Split('=');
-                tmp.Appname = parts[1];
-
-                line = reader.ReadLine();
-                parts = line.Split('=');
-                tmp.Appversion = parts[1];
-
-                while (line != "")
-                {
-                    line = reader.ReadLine();
-                    if (line == "" || line == null) break;
-                    parts = line.Split(new char[] { '=' }, 2);
-
-                    tmp.ConfigItems.Add(new ConfigItem { Name = parts[0], Value = parts[1] });
-                }
-            }
-
+            SettingsModel tmp = Newtonsoft.Json.JsonConvert.DeserializeObject<SettingsModel>(json);
             return tmp;
-        }
-
-        private string SerializeToIni(SettingsModel obj)
-        {
-
-            StringBuilder sb = new StringBuilder(); 
-
-            sb.AppendLine($"appname={obj.Appname}");
-            sb.AppendLine($"appversion={obj.Appversion}");
-                    
-            foreach ( ConfigItem configitem in obj.ConfigItems )
-            {
-                sb.AppendLine($"{configitem.Name}={configitem.Value}");
-            }
-            return sb.ToString();
         }
 
         // Save JSON string to a file
         public void Save()
         {
-            string ini = SerializeToIni(settings);
-            File.WriteAllText(FilePath, ini);                       
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(settings, Newtonsoft.Json.Formatting.Indented);
+            File.WriteAllText(FilePath, json);                       
         }
     }
 }

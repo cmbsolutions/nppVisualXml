@@ -152,9 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EmbeddedResource Include="Storage\nppVisualXmlSettings.ini">
+    <None Include="Storage\nppVisualXmlSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cancel.png" />
@@ -163,6 +163,9 @@
     <None Include="Resources\information_button.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.4</Version>
+    </PackageReference>
     <PackageReference Include="UnmanagedExports.Repack.Upgrade">
       <Version>1.2.1</Version>
       <GeneratePathProperty>true</GeneratePathProperty>

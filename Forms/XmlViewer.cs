@@ -1,6 +1,7 @@
 ﻿using Kbg.NppPluginNET.PluginInfrastructure;
 using nppVisualXml.Modules;
 using nppVisualXml.Storage;
+using nppVisualXml.Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -33,85 +34,19 @@ namespace Kbg.NppPluginNET
 
         public void LoadSettings()
         {
-            foreach (nppVisualXml.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
+            tsbCaseSensitive.Checked = settings.settings.ToolStrip1.TsbCaseSensitive;
+            tsbRegex.Checked = settings.settings.ToolStrip1.TsbRegex;
+
+            for (int i = 0; i < settings.settings.ToolStrip1.TscboSearch.History.Count; i++)
             {
-                if (configitem == null || configitem.Name.StartsWith("Quick")) { continue; }   
-
-                Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
-
-                if (ctrl != null && ctrl.Name.StartsWith("NumericUpDown"))
-                {
-                    NumericUpDown nupdown = ctrl as NumericUpDown;
-                    nupdown.Value = Math.Min(Convert.ToDecimal(configitem.Value), nupdown.Maximum);
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("Checkbox"))
-                {
-                    System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
-                    check.Checked = Convert.ToBoolean(configitem.Value);
-                    //TriggerCheckBoxChangeEvent(check);
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("Textbox"))
-                {
-                    TextBox txt = ctrl as TextBox;
-                    txt.Text = configitem.Value;
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("Radio"))
-                {
-                    System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
-                    radio.Checked = Convert.ToBoolean(configitem.Value);
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("TabControl"))
-                {
-                    System.Windows.Forms.TabControl tab = ctrl as System.Windows.Forms.TabControl;
-                    tab.SelectedTab = tab.TabPages[Convert.ToInt32(configitem.Value)];
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("ComboBox"))
-                {
-                    ComboBox combo = ctrl as ComboBox;
-                    combo.Text = configitem.Value;
-                }
+                tscboSearch.Items.Add(settings.settings.ToolStrip1.TscboSearch.History[i]);
             }
         }
 
         private void SaveSettings()
         {
-            foreach (nppVisualXml.Storage.Models.ConfigItem configitem in settings.settings.ConfigItems)
-            {
-                if (configitem.Name.StartsWith("Quick")) { continue; }
-
-                Control ctrl = this.Controls.Find(configitem.Name, true).FirstOrDefault();
-
-                if (ctrl != null && ctrl.Name.StartsWith("NumericUpDown"))
-                {
-                    NumericUpDown nupdown = ctrl as NumericUpDown;
-                    configitem.Value = nupdown.Value.ToString();
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("Checkbox"))
-                {
-                    System.Windows.Forms.CheckBox check = ctrl as System.Windows.Forms.CheckBox;
-                    configitem.Value = (check.Checked ? "true" : "false");
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("Textbox"))
-                {
-                    TextBox txt = ctrl as TextBox;
-                    configitem.Value = txt.Text;
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("Radio"))
-                {
-                    System.Windows.Forms.RadioButton radio = ctrl as System.Windows.Forms.RadioButton;
-                    configitem.Value = (radio.Checked ? "true" : "false");
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("TabControl"))
-                {
-                    System.Windows.Forms.TabControl tab = ctrl as System.Windows.Forms.TabControl;
-                    configitem.Value = tab.SelectedIndex.ToString();
-                }
-                if (ctrl != null && ctrl.Name.StartsWith("ComboBox"))
-                {
-                    ComboBox combo = ctrl as ComboBox;
-                    configitem.Value = combo.Text;
-                }
-            }
+            settings.settings.ToolStrip1.TsbCaseSensitive = tsbCaseSensitive.Checked;
+            settings.settings.ToolStrip1.TsbRegex = tsbRegex.Checked;
 
             settings.Save();
         }
@@ -225,9 +160,11 @@ namespace Kbg.NppPluginNET
 
         private void tsbSearch_Click(object sender, EventArgs e)
         {
-            var q = tstSearch.Text;
-            bool caseSensitive = tsbCaseSensitive.Checked; // if you have this
-            bool useRegex = tsbRegex.Checked;              // if you have this
+            var q = tscboSearch.Text;
+            bool caseSensitive = tsbCaseSensitive.Checked;
+            bool useRegex = tsbRegex.Checked;
+
+            NewSearchHistoryItem(q, caseSensitive, useRegex);
 
             var hits = XmlTreeFiller.FindMatchesInXDoc(q, caseSensitive, useRegex).ToList();
             
@@ -294,10 +231,9 @@ namespace Kbg.NppPluginNET
                 // Find child element node matching the next XElement in chain
                 var nextEl = chain.Peek();
 
-                TreeNode nextNode = null;
 
                 // If we’ve already materialized it, use the index
-                if (TreeNodeIndex.TryGetNode(nextEl, out nextNode))
+                if (TreeNodeIndex.TryGetNode(nextEl, out TreeNode nextNode))
                 {
                     curNode = nextNode;
                     continue;
@@ -389,6 +325,26 @@ namespace Kbg.NppPluginNET
                 }
                 finally { tvXml.EndUpdate(); }
             }
+        }
+
+        private void NewSearchHistoryItem(string text, bool cc, bool regex)
+        {
+            History tmp = new History();
+            tmp.SearchText = text;
+            tmp.CaseSensitive = cc;
+            tmp.Regex = regex;
+            settings.settings.ToolStrip1.TscboSearch.History.RemoveAll(h => h.SearchText == text && h.CaseSensitive == cc && h.Regex == regex);
+            settings.settings.ToolStrip1.TscboSearch.History.Insert(0,tmp);
+            settings.settings.ToolStrip1.TscboSearch.History = settings.settings.ToolStrip1.TscboSearch.History.Take(10).ToList();
+            tscboSearch.Items.Clear();
+            tscboSearch.Items.AddRange(settings.settings.ToolStrip1.TscboSearch.History.ToArray());
+        }
+
+        private void tscboSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            History history = (History)tscboSearch.SelectedItem;
+            tsbCaseSensitive.Checked = history.CaseSensitive;
+            tsbRegex.Checked = history.Regex;
         }
     }
 }

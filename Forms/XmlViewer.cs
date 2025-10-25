@@ -151,22 +151,34 @@ namespace Kbg.NppPluginNET
             // Move caret, collapse selection, and scroll into view
             editor.SetSel(targetPos, targetPos);
             editor.ScrollCaret();
-
-            // Optional: flash/select a token width for visibility (e.g., 1 char)
-            // int nextByte = byteOffset + (colChars < lineText.Length ? Encoding.UTF8.GetByteCount(lineText.AsSpan(colChars, 1)) : 0);
-            // editor.SetSel(targetPos, lineStartPos + nextByte);
-            // editor.ScrollCaret();
         }
 
         private void tsbSearch_Click(object sender, EventArgs e)
         {
-            var q = tscboSearch.Text;
+            var qText = tscboSearch.Text.Trim();
             bool caseSensitive = tsbCaseSensitive.Checked;
             bool useRegex = tsbRegex.Checked;
+            
+            if (useRegex)
+            {
+                try
+                {
+                    var options = caseSensitive ? System.Text.RegularExpressions.RegexOptions.None : System.Text.RegularExpressions.RegexOptions.IgnoreCase;
+                    var re = new System.Text.RegularExpressions.Regex(qText, options | System.Text.RegularExpressions.RegexOptions.CultureInvariant);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Invalid regular expression:\n{ex.Message}", "Regex Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
 
-            NewSearchHistoryItem(q, caseSensitive, useRegex);
+            var sq = SemanticSearch.ParseStructuredQuery(qText);
+            var hits = (sq != null)
+                ? SemanticSearch.StructuredSearch(XmlTreeFiller.GetXmlDocument(), sq).ToList()
+                : XmlTreeFiller.FindMatchesInXDoc(qText, caseSensitive, useRegex).ToList();
 
-            var hits = XmlTreeFiller.FindMatchesInXDoc(q, caseSensitive, useRegex).ToList();
+            NewSearchHistoryItem(qText, caseSensitive, useRegex);
             
             int visibleCount = 0;
             tvXml.BeginUpdate();
@@ -185,9 +197,8 @@ namespace Kbg.NppPluginNET
             }
             finally { tvXml.EndUpdate(); }
 
-            // 3) Now run your substring highlighter over the whole tree.
-            //    This computes correct ranges based on the actual node.Text.
-            int matchCount = TreeSearchOwnerDraw.SearchAndHighlight(tvXml, q, caseSensitive, useRegex);
+            string highlightTerm = (sq != null) ? sq.Value : qText;
+            int matchCount = TreeSearchOwnerDraw.SearchAndHighlight(tvXml, highlightTerm, caseSensitive, useRegex);
 
             tXPath.Text = matchCount == 1 ? "1 match" : $"{matchCount} matches";
         }
@@ -315,16 +326,23 @@ namespace Kbg.NppPluginNET
         private void ExpandNodeIfPlaceholder(TreeNode node)
         {
             var ph = XmlTreeFiller.FindPlaceholderChild(node);
-            if (ph != null)
+            if (ph == null) return; // already populated
+
+            // Remove just the sentinel
+            node.Nodes.Remove(ph);
+
+            // Populate synchronously here (no async/await)
+            if (node.Tag is List<XAttribute> attrs)
             {
-                // trigger your lazy populate synchronously
-                tvXml.BeginUpdate();
-                try
-                {
-                    node.Expand(); // your BeforeExpand removes placeholder and fills real children
-                }
-                finally { tvXml.EndUpdate(); }
+                XmlTreeFiller.PopulateAttributes(node, attrs);
             }
+            else if (node.Tag is XElement el)
+            {
+                XmlTreeFiller.PopulateElementChildren(node, el);
+            }
+
+            // Now the real children exist; open it
+            if (!node.IsExpanded) node.Expand();
         }
 
         private void NewSearchHistoryItem(string text, bool cc, bool regex)
@@ -338,6 +356,7 @@ namespace Kbg.NppPluginNET
             settings.settings.ToolStrip1.TscboSearch.History = settings.settings.ToolStrip1.TscboSearch.History.Take(10).ToList();
             tscboSearch.Items.Clear();
             tscboSearch.Items.AddRange(settings.settings.ToolStrip1.TscboSearch.History.ToArray());
+            settings.Save();
         }
 
         private void tscboSearch_SelectedIndexChanged(object sender, EventArgs e)

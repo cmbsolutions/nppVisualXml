@@ -219,8 +219,12 @@ namespace nppVisualXml.Modules
 
         private static void ExpandAncestors(TreeNode node)
         {
-            for (var p = node.Parent; p != null; p = p.Parent)
+            var p = node.Parent;
+            while (p != null)
+            {
                 p.Expand();
+                p = p.Parent;
+            }
         }
 
         private static void OnTreeDisposed(object sender, EventArgs e)

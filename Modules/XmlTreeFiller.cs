@@ -19,6 +19,12 @@ namespace nppVisualXml.Modules
 
         private static XDocument _xdoc;
 
+        public static XDocument GetXmlDocument()
+        {
+            return _xdoc;
+        }
+            
+
         public static void LoadXmlIntoTree(TreeView tree, string xmlText)
         {
             tree.BeginUpdate();
@@ -165,6 +171,18 @@ namespace nppVisualXml.Modules
             return false;
         }
 
+        public static void PopulateAttributes(TreeNode parent, List<XAttribute> attrs)
+        {
+            var built = new List<TreeNode>(attrs.Count);
+            foreach (var a in attrs)
+            {
+                var n = new TreeNode($"@{a.Name.LocalName} = \"{Truncate(a.Value, MaxPreviewLen)}\"") { Tag = a };
+                TreeNodeIndex.Register(n, a);                    // keep index up to date
+                built.Add(n);
+            }
+            AddInChunks(parent, built);            // your existing chunked adder (sync)
+        }
+
         public static async Task PopulateAttributesAsync(TreeNode parent, List<XAttribute> attrs)
         {
             // Build TreeNode objects off the UI thread (cheap, no handles yet)
@@ -182,6 +200,55 @@ namespace nppVisualXml.Modules
             });
 
             AddInChunks(parent, built);
+        }
+
+        public static void PopulateElementChildren(TreeNode parent, XElement el)
+        {
+            var built = new List<TreeNode>();
+
+            foreach (var n in el.Nodes())
+            {
+                switch (n.NodeType)
+                {
+                    case System.Xml.XmlNodeType.Element:
+                        var childElNode = CreateElementNodeLazy((XElement)n); // this registers element
+                        built.Add(childElNode);
+                        break;
+
+                    case System.Xml.XmlNodeType.Text:
+                        var t = (XText)n;
+                        if (!string.IsNullOrWhiteSpace(t.Value))
+                        {
+                            var tn = new TreeNode($"text: {Truncate(t.Value, MaxPreviewLen)}") { Tag = t };
+                            TreeNodeIndex.Register(tn, t);
+                            built.Add(tn);
+                        }
+                        break;
+
+                    case System.Xml.XmlNodeType.CDATA:
+                        var cd = (XCData)n;
+                        var cdn = new TreeNode($"<![CDATA[{Truncate(cd.Value, MaxPreviewLen)}]]>") { Tag = cd };
+                        TreeNodeIndex.Register(cdn, cd);
+                        built.Add(cdn);
+                        break;
+
+                    case System.Xml.XmlNodeType.Comment:
+                        var cm = (XComment)n;
+                        var cmn = new TreeNode($"<!-- {Truncate(cm.Value, MaxPreviewLen)} -->") { Tag = cm };
+                        TreeNodeIndex.Register(cmn, cm);
+                        built.Add(cmn);
+                        break;
+
+                    case System.Xml.XmlNodeType.ProcessingInstruction:
+                        var pi = (XProcessingInstruction)n;
+                        var pin = new TreeNode($"<?{pi.Target} {Truncate(pi.Data, MaxPreviewLen)}?>") { Tag = pi };
+                        TreeNodeIndex.Register(pin, pi);
+                        built.Add(pin);
+                        break;
+                }
+            }
+
+            AddInChunks(parent, built); // sync add
         }
 
         public static async Task PopulateElementChildrenAsync(TreeNode parent, XElement el)

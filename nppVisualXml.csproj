@@ -189,6 +189,9 @@
   <ItemGroup>
     <None Include="Resources\button_blue_remove.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Test.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Condition="Exists($(PkgUnmanagedExports_Repack_Upgrade))" Project="$(PkgUnmanagedExports_Repack_Upgrade)\build\UnmanagedExports.Repack.Upgrade.targets" />
   <PropertyGroup>

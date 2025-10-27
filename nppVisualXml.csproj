@@ -93,7 +93,10 @@
     <Compile Include="JSON_Tools\JNode.cs" />
     <Compile Include="JSON_Tools\JsonParser.cs" />
     <Compile Include="Modules\NppText.cs" />
+    <Compile Include="Modules\SemanticSearch.cs" />
     <Compile Include="Modules\StringGenerator.cs" />
+    <Compile Include="Modules\StructuredQuery.cs" />
+    <Compile Include="Modules\TreeNodeIndex.cs" />
     <Compile Include="Modules\TreeSearch.cs" />
     <Compile Include="Modules\TreeSearchOwnerDraw.cs" />
     <Compile Include="Modules\XmlLineInfo.cs" />
@@ -151,9 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <EmbeddedResource Include="Storage\nppVisualXmlSettings.ini">
+    <None Include="Storage\nppVisualXmlSettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\cancel.png" />
@@ -162,6 +165,9 @@
     <None Include="Resources\information_button.png" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.4</Version>
+    </PackageReference>
     <PackageReference Include="UnmanagedExports.Repack.Upgrade">
       <Version>1.2.1</Version>
       <GeneratePathProperty>true</GeneratePathProperty>
@@ -182,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\button_blue_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Test.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Condition="Exists($(PkgUnmanagedExports_Repack_Upgrade))" Project="$(PkgUnmanagedExports_Repack_Upgrade)\build\UnmanagedExports.Repack.Upgrade.targets" />

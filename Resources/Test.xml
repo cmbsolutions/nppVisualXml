@@ -1,0 +1,520 @@
+<inv:Inventory xmlns:inv="http://www.example.com/inventory" xmlns:prod="http://www.example.com/product">
+    <inv:ProductGroup inv:name="Electronics">
+        <inv:Category inv:name="Computers">
+            <prod:Product prod:name="Laptop">
+                <prod:Item>
+                    <prod:ItemID>1001</prod:ItemID>
+                    <prod:Name>UltraSlim Laptop</prod:Name>
+                    <prod:Description>Lightweight laptop with 16GB RAM</prod:Description>
+                    <prod:Quantity>20</prod:Quantity>
+                    <prod:Price prod:currency="USD">1200.00</prod:Price>
+                </prod:Item>
+                <prod:Item>
+                    <prod:ItemID>1002</prod:ItemID>
+                    <prod:Name>Gaming Laptop</prod:Name>
+                    <prod:Description>High performance laptop for gaming</prod:Description>
+                    <prod:Quantity>15</prod:Quantity>
+                    <prod:Price prod:currency="USD">1500.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+            <prod:Product prod:name="Desktop">
+                <prod:Item>
+                    <prod:ItemID>1003</prod:ItemID>
+                    <prod:Name>Workstation Desktop</prod:Name>
+                    <prod:Description>Powerful desktop for professional use</prod:Description>
+                    <prod:Quantity>10</prod:Quantity>
+                    <prod:Price prod:currency="USD">2000.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+        </inv:Category>
+        <inv:Category inv:name="Mobile Devices">
+            <prod:Product prod:name="Smartphone">
+                <prod:Item>
+                    <prod:ItemID>2001</prod:ItemID>
+                    <prod:Name>Flagship Smartphone</prod:Name>
+                    <prod:Description>Latest model with advanced features</prod:Description>
+                    <prod:Quantity>50</prod:Quantity>
+                    <prod:Price prod:currency="USD">999.99</prod:Price>
+                </prod:Item>
+				<prod:Item>
+                    <prod:ItemID>2003</prod:ItemID>
+                    <prod:Brand>Apple</prod:Brand>
+                    <prod:Name>iPhone 15 Pro</prod:Name>
+                    <prod:Type>Flagship</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>A17 Pro</prod:Processor>
+                        <prod:RAM unit="GB">8</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.1</prod:Size>
+                            <prod:Resolution>2556×1179</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>OLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>48MP + 12MP + 12MP</prod:Rear>
+                            <prod:Front>12MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">3274</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">27</prod:Wired>
+                                <prod:Wireless unit="W">15</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>iOS</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 6E, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>35</prod:Quantity>
+                    <prod:Price prod:currency="USD">1099.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2004</prod:ItemID>
+                    <prod:Brand>Samsung</prod:Brand>
+                    <prod:Name>Galaxy S24 Ultra</prod:Name>
+                    <prod:Type>Flagship</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8 Gen 3</prod:Processor>
+                        <prod:RAM unit="GB">12</prod:RAM>
+                        <prod:Storage unit="GB">512</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.8</prod:Size>
+                            <prod:Resolution>3120×1440</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>AMOLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>200MP + 50MP + 10MP + 12MP</prod:Rear>
+                            <prod:Front>12MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5000</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">45</prod:Wired>
+                                <prod:Wireless unit="W">15</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 7, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>40</prod:Quantity>
+                    <prod:Price prod:currency="USD">1299.99</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2005</prod:ItemID>
+                    <prod:Brand>Google</prod:Brand>
+                    <prod:Name>Pixel 8 Pro</prod:Name>
+                    <prod:Type>Camera-Focused</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Google Tensor G3</prod:Processor>
+                        <prod:RAM unit="GB">12</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.7</prod:Size>
+                            <prod:Resolution>2992×1344</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>OLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 48MP + 48MP</prod:Rear>
+                            <prod:Front>10.5MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5050</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">30</prod:Wired>
+                                <prod:Wireless unit="W">23</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 7, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>28</prod:Quantity>
+                    <prod:Price prod:currency="USD">999.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2006</prod:ItemID>
+                    <prod:Brand>OnePlus</prod:Brand>
+                    <prod:Name>OnePlus 12</prod:Name>
+                    <prod:Type>Performance</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8 Gen 3</prod:Processor>
+                        <prod:RAM unit="GB">16</prod:RAM>
+                        <prod:Storage unit="GB">512</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.82</prod:Size>
+                            <prod:Resolution>3168×1440</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>AMOLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 64MP + 48MP</prod:Rear>
+                            <prod:Front>32MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5400</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">100</prod:Wired>
+                                <prod:Wireless unit="W">50</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 7, Bluetooth 5.4</prod:Connectivity>
+                        <prod:WaterResistance rating="IP65"/>
+                    </prod:Specifications>
+                    <prod:Quantity>22</prod:Quantity>
+                    <prod:Price prod:currency="USD">899.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2007</prod:ItemID>
+                    <prod:Brand>Xiaomi</prod:Brand>
+                    <prod:Name>Xiaomi 14</prod:Name>
+                    <prod:Type>Flagship Compact</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8 Gen 3</prod:Processor>
+                        <prod:RAM unit="GB">12</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.36</prod:Size>
+                            <prod:Resolution>2670×1200</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>AMOLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 50MP + 50MP</prod:Rear>
+                            <prod:Front>32MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">4610</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">90</prod:Wired>
+                                <prod:Wireless unit="W">50</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 7, Bluetooth 5.4</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>26</prod:Quantity>
+                    <prod:Price prod:currency="USD">799.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2008</prod:ItemID>
+                    <prod:Brand>Sony</prod:Brand>
+                    <prod:Name>Xperia 1 VI</prod:Name>
+                    <prod:Type>Creator</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8 Gen 3</prod:Processor>
+                        <prod:RAM unit="GB">12</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.5</prod:Size>
+                            <prod:Resolution>2520×1080</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>OLED (21:9)</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>48MP + 12MP + 12MP (variable zoom)</prod:Rear>
+                            <prod:Front>12MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5000</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">30</prod:Wired>
+                                <prod:Wireless unit="W">15</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 6E, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>12</prod:Quantity>
+                    <prod:Price prod:currency="USD">1199.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2009</prod:ItemID>
+                    <prod:Brand>Motorola</prod:Brand>
+                    <prod:Name>Edge+ (2024)</prod:Name>
+                    <prod:Type>Balanced Flagship</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8s Gen 3</prod:Processor>
+                        <prod:RAM unit="GB">12</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.7</prod:Size>
+                            <prod:Resolution>2712×1220</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">165</prod:RefreshRate>
+                            <prod:Panel>P-OLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 12MP + 50MP</prod:Rear>
+                            <prod:Front>60MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5100</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">68</prod:Wired>
+                                <prod:Wireless unit="W">15</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 7, Bluetooth 5.4</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>18</prod:Quantity>
+                    <prod:Price prod:currency="USD">799.99</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2010</prod:ItemID>
+                    <prod:Brand>Nokia</prod:Brand>
+                    <prod:Name>Nokia G42 5G</prod:Name>
+                    <prod:Type>Midrange</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 480+</prod:Processor>
+                        <prod:RAM unit="GB">6</prod:RAM>
+                        <prod:Storage unit="GB">128</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.56</prod:Size>
+                            <prod:Resolution>1612×720</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">90</prod:RefreshRate>
+                            <prod:Panel>LCD</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 2MP + 2MP</prod:Rear>
+                            <prod:Front>8MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5000</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">20</prod:Wired>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 5, Bluetooth 5.1</prod:Connectivity>
+                        <prod:WaterResistance rating="IP52"/>
+                    </prod:Specifications>
+                    <prod:Quantity>30</prod:Quantity>
+                    <prod:Price prod:currency="USD">279.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2011</prod:ItemID>
+                    <prod:Brand>Fairphone</prod:Brand>
+                    <prod:Name>Fairphone 5</prod:Name>
+                    <prod:Type>Sustainability</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Qualcomm QCM6490</prod:Processor>
+                        <prod:RAM unit="GB">8</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.46</prod:Size>
+                            <prod:Resolution>2700×1224</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">90</prod:RefreshRate>
+                            <prod:Panel>OLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 50MP</prod:Rear>
+                            <prod:Front>50MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">4200</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">30</prod:Wired>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 6, Bluetooth 5.2</prod:Connectivity>
+                        <prod:WaterResistance rating="IP55"/>
+                    </prod:Specifications>
+                    <prod:Quantity>14</prod:Quantity>
+                    <prod:Price prod:currency="USD">699.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2012</prod:ItemID>
+                    <prod:Brand>ASUS</prod:Brand>
+                    <prod:Name>ROG Phone 8</prod:Name>
+                    <prod:Type>Gaming</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8 Gen 3</prod:Processor>
+                        <prod:RAM unit="GB">16</prod:RAM>
+                        <prod:Storage unit="GB">512</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.78</prod:Size>
+                            <prod:Resolution>2400×1080</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">165</prod:RefreshRate>
+                            <prod:Panel>AMOLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 13MP + 32MP</prod:Rear>
+                            <prod:Front>32MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5500</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">65</prod:Wired>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 7, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68"/>
+                    </prod:Specifications>
+                    <prod:Quantity>16</prod:Quantity>
+                    <prod:Price prod:currency="USD">1099.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2013</prod:ItemID>
+                    <prod:Brand>Samsung</prod:Brand>
+                    <prod:Name>Galaxy Z Flip5</prod:Name>
+                    <prod:Type>Foldable (Flip)</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Snapdragon 8 Gen 2 for Galaxy</prod:Processor>
+                        <prod:RAM unit="GB">8</prod:RAM>
+                        <prod:Storage unit="GB">256</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.7 (inner)</prod:Size>
+                            <prod:Resolution>2640×1080</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>Foldable AMOLED + 3.4" cover</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>12MP + 12MP</prod:Rear>
+                            <prod:Front>10MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">3700</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">25</prod:Wired>
+                                <prod:Wireless unit="W">15</prod:Wireless>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 6E, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="IPX8"/>
+                    </prod:Specifications>
+                    <prod:Quantity>20</prod:Quantity>
+                    <prod:Price prod:currency="USD">999.99</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2014</prod:ItemID>
+                    <prod:Brand>CAT</prod:Brand>
+                    <prod:Name>Cat S75</prod:Name>
+                    <prod:Type>Rugged</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>Dimensity 930</prod:Processor>
+                        <prod:RAM unit="GB">6</prod:RAM>
+                        <prod:Storage unit="GB">128</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.6</prod:Size>
+                            <prod:Resolution>2408×1080</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">120</prod:RefreshRate>
+                            <prod:Panel>LCD</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 8MP + 2MP</prod:Rear>
+                            <prod:Front>8MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5000</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">15</prod:Wired>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 6, Bluetooth 5.1, Satellite messaging</prod:Connectivity>
+                        <prod:WaterResistance rating="IP68/IP69K; MIL-STD-810H"/>
+                    </prod:Specifications>
+                    <prod:Quantity>8</prod:Quantity>
+                    <prod:Price prod:currency="USD">599.00</prod:Price>
+                </prod:Item>
+
+                <prod:Item>
+                    <prod:ItemID>2015</prod:ItemID>
+                    <prod:Brand>Samsung</prod:Brand>
+                    <prod:Name>Galaxy A15 5G</prod:Name>
+                    <prod:Type>Budget</prod:Type>
+                    <prod:Specifications>
+                        <prod:Processor>MediaTek Dimensity 6100+</prod:Processor>
+                        <prod:RAM unit="GB">4</prod:RAM>
+                        <prod:Storage unit="GB">128</prod:Storage>
+                        <prod:Display>
+                            <prod:Size unit="inches">6.5</prod:Size>
+                            <prod:Resolution>2400×1080</prod:Resolution>
+                            <prod:RefreshRate unit="Hz">90</prod:RefreshRate>
+                            <prod:Panel>Super AMOLED</prod:Panel>
+                        </prod:Display>
+                        <prod:Cameras>
+                            <prod:Rear>50MP + 5MP + 2MP</prod:Rear>
+                            <prod:Front>13MP</prod:Front>
+                        </prod:Cameras>
+                        <prod:Power>
+                            <prod:BatteryCapacity unit="mAh">5000</prod:BatteryCapacity>
+                            <prod:Charging>
+                                <prod:Wired unit="W">25</prod:Wired>
+                            </prod:Charging>
+                        </prod:Power>
+                        <prod:OS>Android</prod:OS>
+                        <prod:Connectivity>5G, Wi-Fi 5, Bluetooth 5.3</prod:Connectivity>
+                        <prod:WaterResistance rating="—"/>
+                    </prod:Specifications>
+                    <prod:Quantity>45</prod:Quantity>
+                    <prod:Price prod:currency="USD">199.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+            <prod:Product prod:name="Tablet">
+                <prod:Item>
+                    <prod:ItemID>2002</prod:ItemID>
+                    <prod:Name>Tablet Pro</prod:Name>
+                    <prod:Description>High resolution display tablet</prod:Description>
+                    <prod:Quantity>30</prod:Quantity>
+                    <prod:Price prod:currency="USD">600.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+        </inv:Category>
+    </inv:ProductGroup>
+    <inv:ProductGroup inv:name="Home Appliances">
+        <inv:Category inv:name="Kitchen">
+            <prod:Product prod:name="Microwave">
+                <prod:Item>
+                    <prod:ItemID>3001</prod:ItemID>
+                    <prod:Name>Microwave Oven</prod:Name>
+                    <prod:Description>700W microwave oven</prod:Description>
+                    <prod:Quantity>25</prod:Quantity>
+                    <prod:Price prod:currency="USD">150.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+            <prod:Product prod:name="Refrigerator">
+                <prod:Item>
+                    <prod:ItemID>3002</prod:ItemID>
+                    <prod:Name>Double Door Refrigerator</prod:Name>
+                    <prod:Description>Energy efficient refrigerator</prod:Description>
+                    <prod:Quantity>10</prod:Quantity>
+                    <prod:Price prod:currency="USD">900.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+        </inv:Category>
+        <inv:Category inv:name="Laundry">
+            <prod:Product prod:name="Washing Machine">
+                <prod:Item>
+                    <prod:ItemID>4001</prod:ItemID>
+                    <prod:Name>Front Load Washer</prod:Name>
+                    <prod:Description>7kg capacity front load washing machine</prod:Description>
+                    <prod:Quantity>12</prod:Quantity>
+                    <prod:Price prod:currency="USD">700.00</prod:Price>
+                </prod:Item>
+            </prod:Product>
+        </inv:Category>
+    </inv:ProductGroup>
+</inv:Inventory>

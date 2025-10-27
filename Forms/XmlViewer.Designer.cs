@@ -35,13 +35,13 @@
             this.tsbCollapse = new System.Windows.Forms.ToolStripButton();
             this.tsbExpand = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tstSearch = new System.Windows.Forms.ToolStripTextBox();
+            this.tscboSearch = new System.Windows.Forms.ToolStripComboBox();
             this.tsbSearch = new System.Windows.Forms.ToolStripButton();
+            this.tsbCaseSensitive = new System.Windows.Forms.ToolStripButton();
+            this.tsbRegex = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.tXPath = new System.Windows.Forms.TextBox();
-            this.tsbCaseSensitive = new System.Windows.Forms.ToolStripButton();
-            this.tsbRegex = new System.Windows.Forms.ToolStripButton();
             this.tlpFrames.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -53,7 +53,7 @@
             this.tvXml.Location = new System.Drawing.Point(3, 28);
             this.tvXml.Name = "tvXml";
             this.tvXml.ShowNodeToolTips = true;
-            this.tvXml.Size = new System.Drawing.Size(328, 502);
+            this.tvXml.Size = new System.Drawing.Size(388, 502);
             this.tvXml.TabIndex = 0;
             // 
             // tlpFrames
@@ -70,7 +70,7 @@
             this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
-            this.tlpFrames.Size = new System.Drawing.Size(334, 561);
+            this.tlpFrames.Size = new System.Drawing.Size(394, 561);
             this.tlpFrames.TabIndex = 1;
             // 
             // toolStrip1
@@ -79,15 +79,15 @@
             this.tsbCollapse,
             this.tsbExpand,
             this.toolStripSeparator1,
-            this.tstSearch,
-            this.tsbSearch,
-            this.tsbCaseSensitive,
-            this.tsbRegex,
+            this.tsbReload,
             this.toolStripSeparator2,
-            this.tsbReload});
+            this.tsbRegex,
+            this.tsbCaseSensitive,
+            this.tsbSearch,
+            this.tscboSearch});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(334, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(394, 25);
             this.toolStrip1.TabIndex = 1;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -116,15 +116,17 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // tstSearch
+            // tscboSearch
             // 
-            this.tstSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.tstSearch.MaxLength = 50;
-            this.tstSearch.Name = "tstSearch";
-            this.tstSearch.Size = new System.Drawing.Size(100, 25);
+            this.tscboSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tscboSearch.Name = "tscboSearch";
+            this.tscboSearch.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
+            this.tscboSearch.Size = new System.Drawing.Size(200, 25);
+            this.tscboSearch.SelectedIndexChanged += new System.EventHandler(this.tscboSearch_SelectedIndexChanged);
             // 
             // tsbSearch
             // 
+            this.tsbSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbSearch.Image = global::nppVisualXml.Properties.Resources.find;
             this.tsbSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -133,33 +135,9 @@
             this.tsbSearch.Text = "Search";
             this.tsbSearch.Click += new System.EventHandler(this.tsbSearch_Click);
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // tsbReload
-            // 
-            this.tsbReload.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbReload.Image = global::nppVisualXml.Properties.Resources.refresh;
-            this.tsbReload.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbReload.Name = "tsbReload";
-            this.tsbReload.Size = new System.Drawing.Size(23, 22);
-            this.tsbReload.Text = "Reload";
-            this.tsbReload.Click += new System.EventHandler(this.tsbReload_Click);
-            // 
-            // tXPath
-            // 
-            this.tXPath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tXPath.Location = new System.Drawing.Point(3, 536);
-            this.tXPath.Name = "tXPath";
-            this.tXPath.ReadOnly = true;
-            this.tXPath.Size = new System.Drawing.Size(328, 22);
-            this.tXPath.TabIndex = 2;
-            this.tXPath.WordWrap = false;
-            // 
             // tsbCaseSensitive
             // 
+            this.tsbCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbCaseSensitive.BackColor = System.Drawing.SystemColors.Control;
             this.tsbCaseSensitive.Checked = true;
             this.tsbCaseSensitive.CheckOnClick = true;
@@ -174,6 +152,7 @@
             // 
             // tsbRegex
             // 
+            this.tsbRegex.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbRegex.Checked = true;
             this.tsbRegex.CheckOnClick = true;
             this.tsbRegex.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -184,12 +163,39 @@
             this.tsbRegex.Size = new System.Drawing.Size(23, 22);
             this.tsbRegex.Text = "*.";
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbReload
+            // 
+            this.tsbReload.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbReload.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbReload.Image = global::nppVisualXml.Properties.Resources.refresh;
+            this.tsbReload.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbReload.Name = "tsbReload";
+            this.tsbReload.Size = new System.Drawing.Size(23, 22);
+            this.tsbReload.Text = "Reload";
+            this.tsbReload.Click += new System.EventHandler(this.tsbReload_Click);
+            // 
+            // tXPath
+            // 
+            this.tXPath.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tXPath.Location = new System.Drawing.Point(3, 536);
+            this.tXPath.Name = "tXPath";
+            this.tXPath.ReadOnly = true;
+            this.tXPath.Size = new System.Drawing.Size(388, 22);
+            this.tXPath.TabIndex = 2;
+            this.tXPath.WordWrap = false;
+            // 
             // XmlViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(334, 561);
+            this.ClientSize = new System.Drawing.Size(394, 561);
             this.Controls.Add(this.tlpFrames);
             this.DoubleBuffered = true;
             this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -215,12 +221,12 @@
         private System.Windows.Forms.ToolStripButton tsbCollapse;
         private System.Windows.Forms.ToolStripButton tsbExpand;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripTextBox tstSearch;
         private System.Windows.Forms.ToolStripButton tsbSearch;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton tsbReload;
         private System.Windows.Forms.TextBox tXPath;
         private System.Windows.Forms.ToolStripButton tsbCaseSensitive;
         private System.Windows.Forms.ToolStripButton tsbRegex;
+        private System.Windows.Forms.ToolStripComboBox tscboSearch;
     }
 }

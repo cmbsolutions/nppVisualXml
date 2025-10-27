@@ -1,0 +1,27 @@
+{
+    "appname": "nppVisualXml",
+    "appversion": "0.0.1",
+    "toolStrip1": {
+        "tsbCaseSensitive": false,
+        "tsbRegex": false,
+        "tscboSearch": {
+            "History": [
+                {
+                    "CaseSensitive": false,
+                    "Regex": false,
+                    "SearchText": "Quantity"
+                },
+                {
+                    "CaseSensitive": true,
+                    "Regex": false,
+                    "SearchText": "Price"
+                },
+                {
+                    "CaseSensitive": false,
+                    "Regex": true,
+                    "SearchText": "<Item.*?>"
+                }
+            ]
+        }
+    }
+}

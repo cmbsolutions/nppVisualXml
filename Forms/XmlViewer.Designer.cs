@@ -42,6 +42,10 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbReload = new System.Windows.Forms.ToolStripButton();
             this.tXPath = new System.Windows.Forms.TextBox();
+            this.lvResults = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tlpFrames.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -53,7 +57,7 @@
             this.tvXml.Location = new System.Drawing.Point(3, 28);
             this.tvXml.Name = "tvXml";
             this.tvXml.ShowNodeToolTips = true;
-            this.tvXml.Size = new System.Drawing.Size(388, 502);
+            this.tvXml.Size = new System.Drawing.Size(388, 349);
             this.tvXml.TabIndex = 0;
             // 
             // tlpFrames
@@ -62,13 +66,15 @@
             this.tlpFrames.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpFrames.Controls.Add(this.tvXml, 0, 1);
             this.tlpFrames.Controls.Add(this.toolStrip1, 0, 0);
-            this.tlpFrames.Controls.Add(this.tXPath, 0, 2);
+            this.tlpFrames.Controls.Add(this.tXPath, 0, 3);
+            this.tlpFrames.Controls.Add(this.lvResults, 0, 2);
             this.tlpFrames.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpFrames.Location = new System.Drawing.Point(0, 0);
             this.tlpFrames.Name = "tlpFrames";
-            this.tlpFrames.RowCount = 3;
+            this.tlpFrames.RowCount = 4;
             this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 70F));
+            this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tlpFrames.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this.tlpFrames.Size = new System.Drawing.Size(394, 561);
             this.tlpFrames.TabIndex = 1;
@@ -79,12 +85,12 @@
             this.tsbCollapse,
             this.tsbExpand,
             this.toolStripSeparator1,
-            this.tsbReload,
-            this.toolStripSeparator2,
-            this.tsbRegex,
-            this.tsbCaseSensitive,
+            this.tscboSearch,
             this.tsbSearch,
-            this.tscboSearch});
+            this.tsbCaseSensitive,
+            this.tsbRegex,
+            this.toolStripSeparator2,
+            this.tsbReload});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(394, 25);
@@ -118,7 +124,6 @@
             // 
             // tscboSearch
             // 
-            this.tscboSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tscboSearch.Name = "tscboSearch";
             this.tscboSearch.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
             this.tscboSearch.Size = new System.Drawing.Size(200, 25);
@@ -126,7 +131,6 @@
             // 
             // tsbSearch
             // 
-            this.tsbSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbSearch.Image = global::nppVisualXml.Properties.Resources.find;
             this.tsbSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -137,7 +141,6 @@
             // 
             // tsbCaseSensitive
             // 
-            this.tsbCaseSensitive.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbCaseSensitive.BackColor = System.Drawing.SystemColors.Control;
             this.tsbCaseSensitive.Checked = true;
             this.tsbCaseSensitive.CheckOnClick = true;
@@ -152,7 +155,6 @@
             // 
             // tsbRegex
             // 
-            this.tsbRegex.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbRegex.Checked = true;
             this.tsbRegex.CheckOnClick = true;
             this.tsbRegex.CheckState = System.Windows.Forms.CheckState.Checked;
@@ -165,13 +167,11 @@
             // 
             // toolStripSeparator2
             // 
-            this.toolStripSeparator2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // tsbReload
             // 
-            this.tsbReload.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.tsbReload.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbReload.Image = global::nppVisualXml.Properties.Resources.refresh;
             this.tsbReload.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -183,12 +183,52 @@
             // tXPath
             // 
             this.tXPath.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tXPath.Location = new System.Drawing.Point(3, 536);
+            this.tXPath.Location = new System.Drawing.Point(3, 535);
             this.tXPath.Name = "tXPath";
             this.tXPath.ReadOnly = true;
             this.tXPath.Size = new System.Drawing.Size(388, 22);
             this.tXPath.TabIndex = 2;
             this.tXPath.WordWrap = false;
+            // 
+            // lvResults
+            // 
+            this.lvResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lvResults.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.lvResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvResults.FullRowSelect = true;
+            this.lvResults.GridLines = true;
+            this.lvResults.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvResults.HideSelection = false;
+            this.lvResults.Location = new System.Drawing.Point(0, 380);
+            this.lvResults.Margin = new System.Windows.Forms.Padding(0);
+            this.lvResults.MultiSelect = false;
+            this.lvResults.Name = "lvResults";
+            this.lvResults.ShowItemToolTips = true;
+            this.lvResults.Size = new System.Drawing.Size(394, 152);
+            this.lvResults.TabIndex = 3;
+            this.lvResults.UseCompatibleStateImageBehavior = false;
+            this.lvResults.View = System.Windows.Forms.View.Details;
+            this.lvResults.VirtualMode = true;
+            this.lvResults.ItemActivate += new System.EventHandler(this.LvResults_ItemActivate);
+            this.lvResults.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.LvResults_RetrieveVirtualItem);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Path";
+            this.columnHeader1.Width = 120;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Preview";
+            this.columnHeader2.Width = 120;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Line:Col";
+            this.columnHeader3.Width = 100;
             // 
             // XmlViewer
             // 
@@ -228,5 +268,9 @@
         private System.Windows.Forms.ToolStripButton tsbCaseSensitive;
         private System.Windows.Forms.ToolStripButton tsbRegex;
         private System.Windows.Forms.ToolStripComboBox tscboSearch;
+        private System.Windows.Forms.ListView lvResults;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
     }
 }

@@ -174,33 +174,47 @@ namespace Kbg.NppPluginNET
             }
 
             var sq = SemanticSearch.ParseStructuredQuery(qText);
-            var hits = (sq != null)
+            IEnumerable<XObject> rawHits = (sq != null)
                 ? SemanticSearch.StructuredSearch(XmlTreeFiller.GetXmlDocument(), sq).ToList()
                 : XmlTreeFiller.FindMatchesInXDoc(qText, caseSensitive, useRegex).ToList();
 
             NewSearchHistoryItem(qText, caseSensitive, useRegex);
-            
-            int visibleCount = 0;
-            tvXml.BeginUpdate();
-            try
-            {
-                foreach (var x in hits)
-                {
-                    var node = EnsureVisibleNodeFor(x);
-                    if (node != null)
-                    {
-                        // Make sure the node is visible
-                        node.EnsureVisible();
-                        visibleCount++;
-                    }
-                }
-            }
-            finally { tvXml.EndUpdate(); }
 
-            string highlightTerm = (sq != null) ? sq.Value : qText;
-            int matchCount = TreeSearchOwnerDraw.SearchAndHighlight(tvXml, highlightTerm, caseSensitive, useRegex);
+            const int MaxResults = 5000;
+            _hits = rawHits.Take(MaxResults).Select(x => new SearchHit(x)).ToList();
 
-            tXPath.Text = matchCount == 1 ? "1 match" : $"{matchCount} matches";
+            // Bind to virtual list
+            lvResults.VirtualListSize = _hits.Count;
+            lvResults.Invalidate();
+
+            // Clear previous highlights in the tree — nothing expanded yet
+            TreeSearchOwnerDraw.Clear(tvXml);
+
+            tXPath.Text = _hits.Count == MaxResults
+                ? $"Showing first {MaxResults} results (truncated)"
+                : $"{_hits.Count} result(s)";
+
+            //int visibleCount = 0;
+            //tvXml.BeginUpdate();
+            //try
+            //{
+            //    foreach (var x in hits)
+            //    {
+            //        var node = EnsureVisibleNodeFor(x);
+            //        if (node != null)
+            //        {
+            //            // Make sure the node is visible
+            //            node.EnsureVisible();
+            //            visibleCount++;
+            //        }
+            //    }
+            //}
+            //finally { tvXml.EndUpdate(); }
+
+            //string highlightTerm = (sq != null) ? sq.Value : qText;
+            //int matchCount = TreeSearchOwnerDraw.SearchAndHighlight(tvXml, highlightTerm, caseSensitive, useRegex);
+
+            //tXPath.Text = matchCount == 1 ? "1 match" : $"{matchCount} matches";
         }
 
         private TreeNode EnsureVisibleNodeFor(XObject target)
@@ -364,6 +378,58 @@ namespace Kbg.NppPluginNET
             History history = (History)tscboSearch.SelectedItem;
             tsbCaseSensitive.Checked = history.CaseSensitive;
             tsbRegex.Checked = history.Regex;
+        }
+
+
+    private List<SearchHit> _hits = new List<SearchHit>();
+
+        private void LvResults_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            if (e.ItemIndex < 0 || e.ItemIndex >= _hits.Count)
+            {
+                e.Item = new ListViewItem("(out of range)");
+                return;
+            }
+
+            var h = _hits[e.ItemIndex];
+            var item = new ListViewItem(h.Path);
+            item.SubItems.Add(h.Preview);
+            item.SubItems.Add(h.Line > 0 ? $"{h.Line}:{h.Col}" : "");
+            e.Item = item;
+        }
+
+        private void LvResults_ItemActivate(object sender, EventArgs e)
+        {
+            if (lvResults.SelectedIndices.Count == 0) return;
+            var idx = lvResults.SelectedIndices[0];
+            if (idx < 0 || idx >= _hits.Count) return;
+
+            var hit = _hits[idx];
+
+            // Materialize just this branch, select it, and highlight its value
+            var node = EnsureVisibleNodeFor(hit.XObj); // <-- your synchronous ensure (from earlier)
+            if (node != null)
+            {
+                tvXml.SelectedNode = node;
+                node.EnsureVisible();
+
+                // highlight only the "value" token for visual cue
+                string highlightTerm = ExtractValueForHighlight(hit.XObj);
+                TreeSearchOwnerDraw.Clear(tvXml);
+                if (!string.IsNullOrEmpty(highlightTerm))
+                    TreeSearchOwnerDraw.SearchAndHighlight(tvXml, highlightTerm, caseSensitive: false, useRegex: false);
+            }
+        }
+
+        private static string ExtractValueForHighlight(XObject xo)
+        {
+            if (xo is XAttribute xa) return xa.Value ?? "";
+            if (xo is XElement xe) return (xe.Value ?? "").Trim();
+            if (xo is XText xt) return xt.Value ?? "";
+            if (xo is XCData cd) return cd.Value ?? "";
+            if (xo is XComment cm) return cm.Value ?? "";
+            if (xo is XProcessingInstruction pi) return (pi.Data ?? "");
+            return "";
         }
     }
 }

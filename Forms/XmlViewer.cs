@@ -30,6 +30,9 @@ namespace Kbg.NppPluginNET
             tvXml.NodeMouseClick += TvXml_NodeMouseClick;
             tvXml.BeforeExpand += TvXml_BeforeExpand;
             TreeSearchOwnerDraw.Attach(tvXml);
+
+            lvResults.Visible = false;
+            tlpFrames.SetRowSpan(tvXml, 2);
         }
 
         public void LoadSettings()
@@ -193,28 +196,6 @@ namespace Kbg.NppPluginNET
             tXPath.Text = _hits.Count == MaxResults
                 ? $"Showing first {MaxResults} results (truncated)"
                 : $"{_hits.Count} result(s)";
-
-            //int visibleCount = 0;
-            //tvXml.BeginUpdate();
-            //try
-            //{
-            //    foreach (var x in hits)
-            //    {
-            //        var node = EnsureVisibleNodeFor(x);
-            //        if (node != null)
-            //        {
-            //            // Make sure the node is visible
-            //            node.EnsureVisible();
-            //            visibleCount++;
-            //        }
-            //    }
-            //}
-            //finally { tvXml.EndUpdate(); }
-
-            //string highlightTerm = (sq != null) ? sq.Value : qText;
-            //int matchCount = TreeSearchOwnerDraw.SearchAndHighlight(tvXml, highlightTerm, caseSensitive, useRegex);
-
-            //tXPath.Text = matchCount == 1 ? "1 match" : $"{matchCount} matches";
         }
 
         private TreeNode EnsureVisibleNodeFor(XObject target)

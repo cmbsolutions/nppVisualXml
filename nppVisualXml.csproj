@@ -90,6 +90,12 @@
     <Compile Include="Forms\About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SearchResultsWidget.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchResultsWidget.Designer.cs">
+      <DependentUpon>SearchResultsWidget.cs</DependentUpon>
+    </Compile>
     <Compile Include="JSON_Tools\JNode.cs" />
     <Compile Include="JSON_Tools\JsonParser.cs" />
     <Compile Include="Modules\NppText.cs" />
@@ -143,6 +149,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\About.resx">
       <DependentUpon>About.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchResultsWidget.resx">
+      <DependentUpon>SearchResultsWidget.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\XmlViewer.resx">
       <DependentUpon>XmlViewer.cs</DependentUpon>
